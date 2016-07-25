@@ -1,0 +1,6 @@
+/platforms
+/plugins
+/hooks
+/www/js
+/node_modules
+*.csv
