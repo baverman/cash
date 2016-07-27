@@ -1,0 +1,47 @@
+.transaction {
+    width: 100%;
+    font-size: 5.2vw;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.2vw;
+}
+
+.src {
+    font-size: 3.5vw;
+    text-align: right;
+    width: 50%;
+    height: 3.5vh;
+}
+
+.amount {
+    text-align: right;
+    width: 50%;
+    height: 4vh;
+}
+
+.date {
+    color: #555;
+    width: 50%;
+    font-size: 3.5vw;
+    height: 3.5vh;
+}
+
+.income {
+    color: #3a3;
+}
+
+.expense {
+    color: #f33;
+}
+
+.transfer {
+    color: #33a;
+}
+
+.unknown {
+    color: #777;
+}
+
+.currency {
+    font-size: 4vw;
+    color: #999;
+}
