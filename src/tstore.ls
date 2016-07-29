@@ -1,4 +1,5 @@
 max = require 'lodash/max'
+sortBy = require 'lodash/sortBy'
 
 transactions =
   * id: 1
@@ -41,6 +42,7 @@ transactions =
     dest: 'cash'
     amount: 15000000
     currency: 'RUB'
+    description: 'Моя ненаглядная зарплата'
 
 
 types =
@@ -51,6 +53,9 @@ types =
 
 
 export create = (transactions) ->
+    transactions = sortBy transactions, 'date'
+    transactions.reverse!
+
     transactions: transactions
     tmap: {[t.id, t] for t in transactions}
     types: types

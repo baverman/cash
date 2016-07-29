@@ -1,6 +1,7 @@
 React    = require 'react'
 PureRenderMixin = require 'react-addons-pure-render-mixin'
 styles = require './tlist.css'
+cn = require 'classnames'
 
 
 export Transaction = $$ React.create-class do
@@ -18,7 +19,11 @@ export Transaction = $$ React.create-class do
                         '\u00a0'
                         $span class-name: styles[tname], t.amount / 100
                 $tr null,
-                    $td class-name: styles.date, t.date
+                    $td class-name: cn(styles.date, styles.truncate),
+                        t.date.split(' ')[0]
+                        '\u00a0'
+                        t.description
+
                     $td class-name: styles.src, t.src
 
 
@@ -26,6 +31,8 @@ export TList = $$ React.create-class do
     mixins: [PureRenderMixin]
 
     render: ->
-        $div null,
+        $div do
+            style:
+                padding: '0 3vw'
             for t in @props.tstore.transactions
                 Transaction key: t.id, transaction: t, tstore: @props.tstore

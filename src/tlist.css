@@ -1,4 +1,5 @@
 .transaction {
+    table-layout: fixed;
     width: 100%;
     font-size: 5.2vw;
     border-bottom: 1px solid #ccc;
@@ -8,19 +9,23 @@
 .src {
     font-size: 3.5vw;
     text-align: right;
-    width: 50%;
+    width: 40%;
     height: 3.5vh;
+}
+
+.dest {
+    width: 60%;
 }
 
 .amount {
     text-align: right;
-    width: 50%;
+    width: 40%;
     height: 4vh;
 }
 
 .date {
     color: #555;
-    width: 50%;
+    width: 60%;
     font-size: 3.5vw;
     height: 3.5vh;
 }
@@ -44,4 +49,10 @@
 .currency {
     font-size: 4vw;
     color: #999;
+}
+
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
