@@ -19,7 +19,7 @@ export Transaction = $$ React.create-class do
                         '\u00a0'
                         $span class-name: styles[tname], t.amount / 100
                 $tr null,
-                    $td class-name: cn(styles.date, styles.truncate),
+                    $td class-name: styles.date,
                         t.date.split(' ')[0]
                         '\u00a0'
                         t.description

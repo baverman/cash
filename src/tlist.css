@@ -6,7 +6,14 @@
     margin-bottom: 0.2vw;
 }
 
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .src {
+    composes: truncate;
     font-size: 3.5vw;
     text-align: right;
     width: 40%;
@@ -14,6 +21,7 @@
 }
 
 .dest {
+    composes: truncate;
     width: 60%;
 }
 
@@ -24,6 +32,7 @@
 }
 
 .date {
+    composes: truncate;
     color: #555;
     width: 60%;
     font-size: 3.5vw;
@@ -51,8 +60,3 @@
     color: #999;
 }
 
-.truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
