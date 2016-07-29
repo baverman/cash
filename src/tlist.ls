@@ -1,7 +1,11 @@
 React    = require 'react'
 PureRenderMixin = require 'react-addons-pure-render-mixin'
-styles = require './tlist.css'
-cn = require 'classnames'
+Button = require 'muicss/lib/react/button';
+
+require! {
+  './app.css': appstyles
+  './tlist.css': styles
+}
 
 
 export Transaction = $$ React.create-class do
@@ -10,7 +14,10 @@ export Transaction = $$ React.create-class do
     render: ->
         t = @props.transaction
         tname = @props.tstore.get-type(t.src, t.dest, t.amount)
-        $table key: t.id, class-name: styles.transaction,
+        $table do
+            key: t.id
+            class-name: styles.transaction
+            on-click: -> cash-router.open 'transaction-edit', id: t.id
             $tbody null,
                 $tr null,
                     $td class-name: styles.dest, t.dest
@@ -31,8 +38,28 @@ export TList = $$ React.create-class do
     mixins: [PureRenderMixin]
 
     render: ->
+        console.log 'render TList'
         $div do
             style:
                 padding: '0 3vw'
             for t in @props.tstore.transactions
                 Transaction key: t.id, transaction: t, tstore: @props.tstore
+
+
+export Main = $$ React.create-class do
+    mixins: [PureRenderMixin]
+
+    render: ->
+        $div do
+            class-name: appstyles.page
+            style:
+                padding-top: '4rem'
+            TList tstore: @props.tstore
+            $ Button,
+                style:
+                    position: \absolute
+                    bottom: '4rem'
+                    right: '4rem'
+                variant: 'fab'
+                color: 'primary'
+                '+'

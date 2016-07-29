@@ -1,6 +1,47 @@
 max = require 'lodash/max'
 sortBy = require 'lodash/sortBy'
 
+class TStore
+    init: (transactions) ->
+        transactions = sortBy transactions, 'date'
+        transactions.reverse!
+
+        @transactions = transactions
+        @tmap = {[t.id, t] for t in transactions}
+        @types = types
+        @next-id = max(transactions, 'id') + 1
+
+    get: (tid) ->
+        @tmap[tid]
+
+    get-type: (src, dest, amount) !->
+        st = src of @types
+        dt = dest of @types
+
+        if st and dt
+            return 'transfer'
+
+        if st
+            if amount > 0
+                return 'expense'
+            else
+                return 'income'
+
+        if dt
+            if amount > 0
+                return 'income'
+            else
+                return 'expense'
+
+        return 'unknown'
+
+
+export get = ->
+    store = new TStore
+    store.init transactions
+    store
+
+
 transactions =
   * id: 1
     date: '2016-06-24 23:06:01'
@@ -50,38 +91,3 @@ types =
     'card:alfa:main': true
     'card:alfa:credit': true
     'debt:tolya': true
-
-
-export create = (transactions) ->
-    transactions = sortBy transactions, 'date'
-    transactions.reverse!
-
-    transactions: transactions
-    tmap: {[t.id, t] for t in transactions}
-    types: types
-    next-id: max(transactions, 'id') + 1
-
-    get-type: (src, dest, amount) !->
-        st = src of @types
-        dt = dest of @types
-
-        if st and dt
-            return 'transfer'
-
-        if st
-            if amount > 0
-                return 'expense'
-            else
-                return 'income'
-
-        if dt
-            if amount > 0
-                return 'income'
-            else
-                return 'expense'
-
-        return 'unknown'
-
-
-export get = ->
-    create(transactions)
