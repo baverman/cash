@@ -1,6 +1,5 @@
 React    = require 'react'
 PureRenderMixin = require 'react-addons-pure-render-mixin'
-Button = require 'muicss/lib/react/button';
 
 require! {
   './app.css': appstyles
@@ -38,7 +37,6 @@ export TList = $$ React.create-class do
     mixins: [PureRenderMixin]
 
     render: ->
-        console.log 'render TList'
         $div do
             style:
                 padding: '0 3vw'
@@ -55,11 +53,10 @@ export Main = $$ React.create-class do
             style:
                 padding-top: '4rem'
             TList tstore: @props.tstore
-            $ Button,
+            $button do
+                class-name: 'mui-btn mui-btn--fab mui-btn--primary'
                 style:
                     position: \absolute
                     bottom: '4rem'
                     right: '4rem'
-                variant: 'fab'
-                color: 'primary'
                 '+'

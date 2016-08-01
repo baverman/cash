@@ -1,43 +1,64 @@
-React    = require 'react'
-PureRenderMixin = require 'react-addons-pure-render-mixin'
-Button = require 'muicss/lib/react/button'
-Form = require 'muicss/lib/react/form'
-Input = require 'muicss/lib/react/input'
-Textarea = require 'muicss/lib/react/textarea'
+React = require 'react'
 
 require! {
+  './mutator.ls'
+  './util.ls': {Pure, Field}
   './app.css': appstyles
 }
 
 
 export TransactionEdit = $$ React.create-class do
-    mixins: [PureRenderMixin]
+    get-initial-state: ->
+        t = @props.tstore.get @props.id
+        tmut: mutator t, ~> @force-update!
 
     save: ->
         cash-router.back!
 
     render: ->
-        t = @props.tstore.get @props.id
+        tmut = @state.tmut
+        t = tmut.val
         $div do
             class-name: appstyles.page
             $div do
                 style:
                     padding: '1rem'
-                $ Form, null,
+                $form null,
                     $table style: width: '100%',
                         $tbody null,
                         $tr null,
-                            $td style: width: '30%',
-                                $ Input, label: 'Currency', value: t.currency, floating-label: true
-                            $td style: padding-left: '1rem',
-                                $ Input, label: 'Amount', value: t.amount / 100, floating-label: true, auto-focus: true
-                    $ Input, label: 'From', value: t.src, floating-label: true
-                    $ Input, label: 'To', value: t.dest, floating-label: true
-                    $ Textarea, label: 'Note', value: t.description, floating-label: true
-                    $ Input, label: 'Date', value: t.date, floating-label: true
+                            Pure by: t.currency, ->
+                                $td style: width: '30%',
+                                    $div class-name: 'mui-textfield mui-textfield--float-label',
+                                        Field mutator: tmut.to('currency'),
+                                            $input type: 'text'
+                                        $label null, 'Currency'
+                            Pure by: t.amount, ->
+                                $td style: padding-left: '1rem',
+                                    $div class-name: 'mui-textfield mui-textfield--float-label',
+                                        Field mutator: tmut.to('amount'),
+                                            $input type: 'text', ref: -> it?.focus!
+                                        $label null, 'Amount'
+                    Pure by: t.src, ->
+                        $div class-name: 'mui-textfield mui-textfield--float-label',
+                            Field mutator: tmut.to('src'), $input type: 'text'
+                            $label null, 'From'
+                    Pure by: t.dest, ->
+                        $div class-name: 'mui-textfield mui-textfield--float-label',
+                            Field mutator: tmut.to('dest'), $input type: 'text'
+                            $label null, 'To'
+                    Pure by: t.description, ->
+                        $div class-name: 'mui-textfield mui-textfield--float-label',
+                            Field mutator: tmut.to('description'), $textarea!
+                            $label null, 'Note'
+                    Pure by: t.date, ->
+                        $div class-name: 'mui-textfield mui-textfield--float-label',
+                            Field mutator: tmut.to('date'), $input type: 'text'
+                            $label null, 'Date'
+
                     $div class-name: 'mui--text-right',
-                        $ Button,
-                            variant: 'raised'
-                            color: 'primary'
+                        $button do
+                            type: 'submit'
+                            class-name: 'mui-btn mui-btn--raised mui-btn--primary'
                             on-click: @save
                             'Save'

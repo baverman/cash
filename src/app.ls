@@ -24,18 +24,17 @@ app-state = mutator do
         app?.set-state it
 
 
+router-mutator = app-state.to \router .detach!
 window.cash-router = router do
     open: (page, params=null) !->
-        ui = app-state.mutator \router .detach!
-        @set-hash(ui.mutator \pages .push [page, params])
+        @set-hash(router-mutator.to \pages .push [page, params])
     back: ->
-        ui = app-state.mutator \router .detach!
-        if ui.val.pages.length > 1
-            @set-hash(ui.mutator \pages .pop!)
+        if router-mutator.val.pages.length > 1
+            @set-hash(router-mutator.to \pages .pop!)
     default: ->
         pages: [[\main, null]]
     on-change: ->
-        app-state.mutator \router .set it
+        app-state.to \router .set it
 
 
 App = $$ React.create-class do

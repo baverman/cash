@@ -14,62 +14,59 @@ get-mutator = (data) ->
         ValueMutator
 
 
+root-parent = (data, on-change, get)->
+    val = data
+    set: ->
+        val := it;
+        on-change it if on-change
+        it
+    get: get or -> val
+
+
 GetMutator =
-    mutator: (key) ->
-        m = @cache[key]
-        if not m
-            data = @val[key]
-            M = get-mutator data
-            m = new M @get-parent(key), data
-            @cache[key] = m
-        return m
+    to: (key, value) ->
+        data = @get![key] or value
+        M = get-mutator data
+        new M @get-parent(key), data
 
     detach: (on-change) ->
-        obj = ^^@
-        obj.parent = if on-change
-                     then set: on-change
-                     else null
-        return obj
+        oldparent = @parent
+        ^^@ <<< parent: root-parent null, on-change, oldparent~get
 
 
-SetValue =
-    set: (val) ->
-        @val = val
-        if @parent
-            @parent.set val
-        else
-            val
+class Value
+    (@parent) ->
+
+    val:~ -> @parent.get!
+    set: (val) -> @parent.set val
+    get: -> @parent.get!
 
 
 GetParent =
     get-parent: (key) ->
         set: @set-key.bind(@, key)
+        get: @get-key.bind(@, key)
         key: key
 
 
-class ValueMutator implements SetValue
-    (@parent, @val) ->
+class ValueMutator extends Value
 
 
-class ObjectMutator implements SetValue, GetMutator, GetParent
-    (@parent, @val) ->
-        @cache = {}
-
+class ObjectMutator extends Value implements GetMutator, GetParent
     set-key: (key, val) ->
-        delete @cache[key]
         obj = assign {}, @val, (key): val
         @set obj
 
+    get-key: (key) -> @get![key]
 
-class ListMutator implements SetValue, GetMutator, GetParent
-    (@parent, @val) ->
-        @cache = {}
 
+class ListMutator extends Value implements GetMutator, GetParent
     set-key: (key, val) ->
-        delete @cache[key]
         obj = @val.slice!
         obj[key] = val
         @set obj
+
+    get-key: (key) -> @get![key]
 
     push: (val) ->
         obj = @val.slice!
@@ -84,4 +81,4 @@ class ListMutator implements SetValue, GetMutator, GetParent
 
 module.exports = (data, onchange) ->
     M = get-mutator data
-    new M set: onchange, data
+    new M root-parent data, onchange
