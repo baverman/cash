@@ -1,4 +1,6 @@
 React = require 'react'
+assign = require 'lodash/assign'
+
 
 field-changed = (props, e) !->
     props.mutator.set e.target.value

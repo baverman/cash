@@ -2,8 +2,7 @@ React    = require 'react'
 PureRenderMixin = require 'react-addons-pure-render-mixin'
 
 require! {
-  './app.css': appstyles
-  './tlist.css': styles
+    './tlist.css': styles
 }
 
 
@@ -49,14 +48,15 @@ export Main = $$ React.create-class do
 
     render: ->
         $div do
-            class-name: appstyles.page
+            class-name: 'full'
             style:
                 padding-top: '4rem'
-            TList tstore: @props.tstore
+            $div class-name: 'scroll',
+                TList tstore: @props.tstore
             $button do
                 class-name: 'mui-btn mui-btn--fab mui-btn--primary'
                 style:
                     position: \absolute
-                    bottom: '4rem'
-                    right: '4rem'
+                    bottom: '10vw'
+                    right: '10vw'
                 '+'
