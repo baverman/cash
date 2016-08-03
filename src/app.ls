@@ -64,8 +64,11 @@ App = $$ React.create-class do
                     Page key: 'main', active: active,
                         Main tstore: @state.tstore
                 else if pname == 'transaction-edit'
-                    Page key: "main-#params.id", active: active,
+                    Page key: "transaction-#params.id", active: active,
                         TransactionEdit id: params.id, tstore: @state.tstore
+                else if pname == 'transaction-new'
+                    Page key: 'transaction-new', active: active,
+                        TransactionEdit tstore: @state.tstore, is-new: true
 
 
 app = ReactDOM.render do

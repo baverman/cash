@@ -26,6 +26,13 @@ class TStore
 
         return null
 
+    add: !->
+        it.id = ++@next-id
+        @tmap[it.id] = it
+        idx = sorted-index-by @transactions, it, 'date'
+        @transactions.splice idx, 0, it
+        @on-change ^^@
+
     save: !->
         old = @get(it.id)
         @tmap[it.id] = it

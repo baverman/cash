@@ -4,7 +4,7 @@ require! 'lodash/isEqual'
 
 require! {
   './mutator.ls'
-  './util.ls': {Pure, Field, TextField}
+  './util.ls': {Pure, Field, TextField, date-format}
   './app.css': appstyles
 }
 
@@ -16,14 +16,22 @@ AmountField = Field do
 
 export TransactionEdit = $$ React.create-class do
     get-initial-state: ->
-        t = @props.tstore.get @props.id
+        if @props.is-new
+            t = {date: date-format(new Date), currency: 'RUB', amount: 0}
+        else
+            t = @props.tstore.get @props.id
+
         transaction: t
         tmut: mutator t, ~> @force-update!
 
     save: ->
         val = @state.tmut.val
-        if not isEqual(val, @state.transaction)
-            @props.tstore.save(val)
+        if @props.is-new
+            @props.tstore.add val
+        else
+            if not isEqual val, @state.transaction
+                @props.tstore.save val
+
         cash-router.back!
         return true
 

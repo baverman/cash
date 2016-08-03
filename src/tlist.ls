@@ -57,6 +57,7 @@ export Main = $$ React.create-class do
                 TList tstore: @props.tstore
             $button do
                 class-name: 'mui-btn mui-btn--fab mui-btn--primary'
+                on-click: !-> cash-router.open 'transaction-new'
                 style:
                     position: \absolute
                     bottom: '10vw'

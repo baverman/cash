@@ -1,5 +1,8 @@
 React = require 'react'
-assign = require 'lodash/assign'
+require! {
+    'lodash/assign'
+    'lodash/padStart'
+}
 
 
 field-changed = (coerce, prepare, props, event) !->
@@ -39,3 +42,16 @@ export Pure = $$ React.create-class do
     render: ->
         # console.log 'Pure render', @props
         @props.children!
+
+
+pad2 = pad-start _, 2, '0'
+
+
+export date-format = ->
+    year = it.get-full-year!
+    month = pad2 it.get-month! + 1
+    day = pad2 it.get-date!
+    hour = pad2 it.get-hours!
+    minute = pad2 it.get-minutes!
+    second = pad2 it.get-seconds!
+    "#year-#month-#day #hour:#minute:#second"
