@@ -27,7 +27,7 @@ class Router
         else null
 
     handle: !~>
-        console.trace 'Router handle'
+        # console.trace 'Router handle'
         it?.prevent-default!
         it?.stop-propagation!
         ui = @get-hash!

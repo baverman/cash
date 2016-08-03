@@ -36,11 +36,13 @@ export TList = $$ React.create-class do
     mixins: [PureRenderMixin]
 
     render: ->
+        tstore = @props.tstore
+        idx = tstore.transactions.length
         $div do
             style:
                 padding: '0 3vw'
-            for t in @props.tstore.transactions
-                Transaction key: t.id, transaction: t, tstore: @props.tstore
+            while t = tstore.transactions[--idx]
+                Transaction key: t.id, transaction: tstore.get(t.id), tstore: tstore
 
 
 export Main = $$ React.create-class do

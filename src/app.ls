@@ -18,11 +18,15 @@ require! {
     './app.css': style
 }
 
+tstore = tstore.get!
+
 app-state = mutator do
-    tstore: tstore.get!
+    tstore: tstore
     router: {}
     ->
         app?.set-state it
+
+tstore.on-change = -> app-state.to \tstore .set it
 
 
 router-mutator = app-state.to \router .detach!

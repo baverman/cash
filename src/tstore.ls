@@ -1,15 +1,42 @@
-max = require 'lodash/max'
-sortBy = require 'lodash/sortBy'
+require! {
+    'lodash/max'
+    'lodash/sortBy'
+    'lodash/sortedIndexBy'
+}
+
 
 class TStore
-    init: (transactions) ->
-        transactions = sortBy transactions, 'date'
-        transactions.reverse!
+    (@on-change) ->
 
+    init: (transactions) ->
+        transactions = sort-by transactions, 'date'
         @transactions = transactions
         @tmap = {[t.id, t] for t in transactions}
         @types = types
         @next-id = max(transactions, 'id') + 1
+
+    find: ->
+        idx = sorted-index-by @transactions, it, 'date'
+        val = @transactions[idx]
+        while val and val.date == it.date
+            if val.id == it.id
+                return idx
+            idx++
+            val = @transactions[idx]
+
+        return null
+
+    save: !->
+        old = @get(it.id)
+        @tmap[it.id] = it
+        if old.date != it.date
+            idx = @find old
+            if idx != null
+                @transactions.splice idx, 1
+            idx = sorted-index-by @transactions, it, 'date'
+            @transactions.splice idx, 0, it
+
+        @on-change ^^@
 
     get: (tid) ->
         @tmap[tid]
@@ -37,7 +64,7 @@ class TStore
 
 
 export get = ->
-    store = new TStore
+    store = new TStore ...
     store.init transactions
     store
 
