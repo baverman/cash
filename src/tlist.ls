@@ -2,6 +2,9 @@ React    = require 'react'
 PureRenderMixin = require 'react-addons-pure-render-mixin'
 
 require! {
+    'lodash/trimStart'
+    './balance.ls': {Balance}
+    './util.ls': {Pure}
     './tlist.css': styles
 }
 
@@ -18,7 +21,7 @@ export Transaction = $$ React.create-class do
             on-click: -> cash-router.open 'transaction-edit', id: t.id
             $tbody null,
                 $tr null,
-                    $td class-name: styles.dest, t.dest
+                    $td class-name: styles.dest, trim-start t.dest, ':'
                     $td class-name: styles.amount,
                         $span class-name: styles.currency, t.currency
                         '\u00a0'
@@ -29,7 +32,7 @@ export Transaction = $$ React.create-class do
                         '\u00a0'
                         t.description
 
-                    $td class-name: styles.src, t.src
+                    $td class-name: styles.src, trim-start t.src, ':'
 
 
 export TList = $$ React.create-class do
@@ -49,12 +52,13 @@ export Main = $$ React.create-class do
     mixins: [PureRenderMixin]
 
     render: ->
+        tstore = @props.tstore
         $div do
             class-name: 'full'
-            style:
-                padding-top: '4rem'
+            Pure by: tstore, ->
+                Balance tstore: tstore
             $div class-name: 'scroll',
-                TList tstore: @props.tstore
+                TList tstore: tstore
             $button do
                 class-name: 'mui-btn mui-btn--fab mui-btn--primary'
                 on-click: !-> cash-router.open 'transaction-new'
