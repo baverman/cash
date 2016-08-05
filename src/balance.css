@@ -1,17 +1,7 @@
 .balance {
     width: 100%;
     font-size: 1.2rem;
-    margin-top: 3vw;
-    margin-bottom: 0;
-}
-
-.balance table {
-    width: 100%;
-    vertical-align: middle;
-}
-
-.balance table td {
-    padding: 0 3vw;
+    line-height: 1.4rem;
 }
 
 .right {
@@ -28,4 +18,14 @@
 
 .credit {
     color: #d33;
+}
+
+.accountList {
+    width: 100%;
+    font-size: 1.1rem;
+    line-height: 2rem;
+}
+
+.accountList td:nth-child(2) {
+    text-align: right;
 }

@@ -6,6 +6,10 @@ is-array = require 'lodash/isArray'
 
 window.$ = React.create-element
 window.$$ = React.create-factory
+window.$$$ = (component) ->
+    (...args) ->
+        React.create-element component, ...args
+
 for key, value of React.DOM
     window."$#key" = value
 
@@ -15,6 +19,7 @@ require! {
     './router.ls'
     './tlist.ls': {Main}
     './tedit.ls': {TransactionEdit}
+    './balance.ls': {Accounts}
     './app.css': style
 }
 
@@ -69,6 +74,9 @@ App = $$ React.create-class do
                 else if pname == 'transaction-new'
                     Page key: 'transaction-new', active: active,
                         TransactionEdit tstore: @state.tstore, is-new: true
+                else if pname == 'account-list'
+                    Page key: 'account-list', active: active,
+                        Accounts tstore: @state.tstore
 
 
 app = ReactDOM.render do

@@ -3,7 +3,7 @@ PureRenderMixin = require 'react-addons-pure-render-mixin'
 
 require! {
     'lodash/trimStart'
-    './balance.ls': {Balance}
+    './balance.ls': {Total}
     './util.ls': {Pure}
     './tlist.css': styles
 }
@@ -55,9 +55,12 @@ export Main = $$ React.create-class do
         tstore = @props.tstore
         $div do
             class-name: 'full'
-            Pure by: tstore, ->
-                Balance tstore: tstore
-            $div class-name: 'scroll',
+            $div do
+                class-name: 'mui-panel'
+                style: padding: '3vw', margin-bottom: 0
+                on-click: -> cash-router.open 'account-list'
+                Total {tstore}
+            $div class-name: 'scroll', style: height: 'calc(100% - 6vw - 1.4rem)',
                 TList tstore: tstore
             $button do
                 class-name: 'mui-btn mui-btn--fab mui-btn--primary'

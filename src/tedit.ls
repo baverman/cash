@@ -46,31 +46,31 @@ export TransactionEdit = $$ React.create-class do
                 $table style: width: '100%',
                     $tbody null,
                     $tr null,
-                        Pure by: t.currency, ->
+                        Pure on: t.currency, ->
                             $td style: width: '30%',
                                 $div class-name: 'mui-textfield mui-textfield--float-label',
                                     TextField mutator: tmut.to('currency'),
                                         $input type: 'text'
                                     $label null, 'Currency'
-                        Pure by: t.amount, ->
+                        Pure on: t.amount, ->
                             $td style: padding-left: '1rem',
                                 $div class-name: 'mui-textfield mui-textfield--float-label',
                                     AmountField mutator: tmut.to('amount'),
                                         $input type: 'text', auto-focus: true
                                     $label null, 'Amount'
-                Pure by: t.src, ->
+                Pure on: t.src, ->
                     $div class-name: 'mui-textfield mui-textfield--float-label',
                         TextField mutator: tmut.to('src'), $input type: 'text'
                         $label null, 'From'
-                Pure by: t.dest, ->
+                Pure on: t.dest, ->
                     $div class-name: 'mui-textfield mui-textfield--float-label',
                         TextField mutator: tmut.to('dest'), $input type: 'text'
                         $label null, 'To'
-                Pure by: t.description, ->
+                Pure on: t.description, ->
                     $div class-name: 'mui-textfield mui-textfield--float-label',
                         TextField mutator: tmut.to('description'), $textarea!
                         $label null, 'Note'
-                Pure by: t.date, ->
+                Pure on: t.date, ->
                     $div class-name: 'mui-textfield mui-textfield--float-label',
                         TextField mutator: tmut.to('date'), $input type: 'text'
                         $label null, 'Date'
