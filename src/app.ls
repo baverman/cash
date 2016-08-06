@@ -69,11 +69,11 @@ App = $$ React.create-class do
                     Page key: 'main', active: active,
                         Main tstore: @state.tstore
                 else if pname == 'transaction-edit'
-                    Page key: "transaction-#params.id", active: active,
-                        TransactionEdit id: params.id, tstore: @state.tstore
+                    Page key: "transaction-#{params.id}", active: active,
+                        TransactionEdit {tstore: @state.tstore} <<< params
                 else if pname == 'transaction-new'
                     Page key: 'transaction-new', active: active,
-                        TransactionEdit tstore: @state.tstore, is-new: true
+                        TransactionEdit {tstore: @state.tstore, is-new: true} <<< params
                 else if pname == 'account-list'
                     Page key: 'account-list', active: active,
                         Accounts tstore: @state.tstore

@@ -5,7 +5,8 @@ require! 'lodash/isEqual'
 require! {
   './mutator.ls'
   './util.ls': {Pure, Field, TextField, date-format}
-  './app.css': appstyles
+  './tlist.ls': {Transaction, TSelectList}
+  './tedit.css': style
 }
 
 
@@ -23,6 +24,7 @@ export TransactionEdit = $$ React.create-class do
 
         transaction: t
         tmut: mutator t, ~> @force-update!
+        show-group-selector: false
 
     save: ->
         val = @state.tmut.val
@@ -36,8 +38,10 @@ export TransactionEdit = $$ React.create-class do
         return true
 
     render: ->
+        tstore = @props.tstore
         tmut = @state.tmut
         t = tmut.val
+
         $div do
             class-name: 'scroll'
             style:
@@ -75,9 +79,37 @@ export TransactionEdit = $$ React.create-class do
                         TextField mutator: tmut.to('date'), $input type: 'text'
                         $label null, 'Date'
 
-                $div class-name: 'mui--text-right',
+                $div class-name: 'mui--pull-right',
+                    $button do
+                        type: 'submit'
+                        class-name: 'mui-btn mui-btn--raised mui-btn--danger'
+                        on-click: @delete
+                        'Delete'
                     $button do
                         type: 'submit'
                         class-name: 'mui-btn mui-btn--raised mui-btn--primary'
                         on-click: @save
                         'Save'
+
+                $div class-name: 'mui--pull-left',
+                    $button do
+                        type: 'submit'
+                        class-name: 'mui-btn mui-btn--raised mui-btn--accent'
+                        on-click: ~> @set-state show-group-selector: true
+                        'Group'
+
+                Pure on: t.group, ->
+                    $div class-name: style.group, for tid in t.group or []
+                        if tid == t.id
+                            continue
+                        tt = tstore.get(tid)
+                        Transaction key: tt.id, transaction: tstore.get(tt.id), tstore: tstore
+            if @state.show-group-selector
+                $div class-name: 'modal',
+                    TSelectList do
+                        current: t.id
+                        tstore: tstore
+                        group: t.group
+                        on-save: ~>
+                            tmut.to \group .set it
+                            @set-state show-group-selector: false

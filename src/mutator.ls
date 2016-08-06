@@ -59,6 +59,9 @@ class ObjectMutator extends Value implements GetMutator, GetParent
 
     get-key: (key) -> @get![key]
 
+    merge: (val) ->
+        @set assign {}, @val, val
+
 
 class ListMutator extends Value implements GetMutator, GetParent
     set-key: (key, val) ->

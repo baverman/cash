@@ -100,6 +100,16 @@ class TStore
             idx = sorted-index-by @transactions, it, 'date'
             @transactions.splice idx, 0, it
 
+        if old.group != it.group
+            group = it.group
+            for tid in old.group or []:
+                t = @tmap[tid]
+                t && t.group = []
+
+            for tid in group or []:
+                t = @tmap[tid]
+                t && t.group = group
+
         @balance-revert old
         @balance-add it
         @on-change ^^@

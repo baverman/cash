@@ -37,6 +37,7 @@ export TextField = Field!
 
 export Pure = $$ React.create-class do
     shouldComponentUpdate: (props, state) ->
+        # console.log 'Pure check', @props, props
         @props.on != props.on
 
     render: ->

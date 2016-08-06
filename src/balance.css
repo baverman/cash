@@ -23,9 +23,17 @@
 .accountList {
     width: 100%;
     font-size: 1.1rem;
-    line-height: 2rem;
+    line-height: 2.5rem;
 }
 
 .accountList td:nth-child(2) {
     text-align: right;
+}
+
+.accountList tr {
+    border-top: 1px dashed #ccc;
+}
+
+.accountList tr:nth-child(1) {
+    border-top: none;
 }
