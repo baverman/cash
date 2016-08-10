@@ -11,6 +11,7 @@ require! {
 
 export Transaction = $$$ (props) ->
     t = props.transaction
+    # console.log t
     tname = props.tstore.get-type(t.src, t.dest, t.amount)
     $table do
         key: t.id
@@ -42,11 +43,13 @@ export TList = $$ React.create-class do
             style:
                 padding: '0 1rem'
             while t = tstore.transactions[--idx]
-                Transaction do
+                tt = tstore.get t.id
+                Pure key: t.id, on: tt, ((t) -> Transaction do
                     key: t.id
-                    transaction: tstore.get(t.id)
+                    transaction: t
                     tstore: tstore
                     on-click: (-> cash-router.open 'transaction-edit', id: it.id).bind null, t
+                ).bind @, tt
 
 
 export TSelectList = $$ React.create-class do
